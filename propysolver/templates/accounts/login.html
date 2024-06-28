@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/static/css/login.css" />
+    <title>Login</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="box">
+        <div class="box-login" id="login">
+          <div class="top-header">
+            <h3>Hello, Again!</h3>
+            <small>We are happy to have you back.</small>
+          </div>
+          <form action="/login/" method="post">
+            {% csrf_token %}
+            <div class="input-group">
+              <div class="input-field">
+                <input
+                  type="text"
+                  class="input-box"
+                  name="username"
+                  placeholder="Username"
+                  required
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="text"
+                  class="input-box"
+                  name="email"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="password"
+                  class="input-box"
+                  id="logPassword"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="submit"
+                  class="input-submit"
+                  value="Sign In"
+                  required
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <form action="/register/" method="post">
+          {% csrf_token %}
+          <div class="box-register" id="register">
+            <div class="top-header">
+              <h3>Sign Up, Now!</h3>
+              <small>We are happy to have you with us.</small>
+            </div>
+            <div class="input-group">
+              <div class="input-field">
+                <input
+                  type="text"
+                  class="input-box"
+                  id="regUsername"
+                  name="username"
+                  placeholder="Username"
+                  required
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="text"
+                  class="input-box"
+                  id="regEmail"
+                  name="email"
+                  placeholder="Email"
+                  reqiured
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="password"
+                  class="input-box"
+                  id="regPassword"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <div class="input-field">
+                <input
+                  type="submit"
+                  class="input-submit"
+                  value="Sign Up"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="switch">
+          <a href="#" class="login active" onclick="login()">Login</a>
+          <a href="#" class="register" onclick="register()">Register</a>
+          <div class="btn-active" id="btn"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var x = document.getElementById("login");
+      var y = document.getElementById("register");
+      var z = document.getElementById("btn");
+
+      function login() {
+        x.style.left = "27px";
+        y.style.right = "-350px";
+        z.style.left = "0px";
+      }
+      function register() {
+        x.style.left = "-350px";
+        y.style.right = "25px";
+        z.style.left = "150px";
+      }
+    </script>
+  </body>
+</html>

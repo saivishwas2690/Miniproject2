@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/code.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>example page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>hljs.highlightAll();</script>
+    <script>
+    </script>
+
+</head>
+
+<body>
+    <div class="nav">
+        <a href="/" style="text-decoration: none; color:#493878"><h1 class="propysolver">ProPySolver</h1></a>
+    </div>
+    <div class="main">
+        <div class="Descrip">
+            <div class="nav_container">
+                <button id="problem" class="btn_nav active button" onclick="Problems()">Problem</button>
+                <button id="pybot" class="btn_nav button" onclick="Pybot()">Pybot</button>
+                <button id="run" class="btn_nav button" onclick="RunTestcases()">Run Testcases</button>
+                <button id="sub" class="btn_nav button" onclick="submissions()">Submissions</button>
+            </div>
+            <div class="box-login" id="Problems">
+                <h1 id="heading">{{ problem.title }}</h1>
+                <div class="prom-btn">
+                    <h3>Problem Statement</h3><br>
+                    <p>{{problem.problem_statement}}</p>
+                </div>
+                <div class="prom-btn">
+                    <h3>input format</h3><br>
+                    <p>{{problem.input_format}}</p>
+                </div>
+                <div class="prom-btn">
+                    <h3>output format</h3><br>
+                    <p>{{problem.output_format}}</p>
+                </div>
+                <div class="prom-btn">
+                    <h3>TimeLimit : {{problem.time_limit}}</h3>
+                </div>
+                <div class="prom-btn">
+                    <h3>Sample input</h3><br>
+                    <pre class="code_get">{{input}}</pre>
+                </div>
+                <div class="prom-btn">
+                    <h3>Sample output</h3><br>
+                    <pre class="code_get">{{output}}</pre>
+                </div>
+            </div>
+            <div class="box-register" id="Pybot">
+                <div class="pycon">
+                    <div class="chat" id="conversation">
+                    </div>
+                    <div class="sugg" id="suggestionbox">
+                        <!-- <button class="btn_sug" onclick="pickSuggestion(this.textContent)"
+                            style="background-color: #8353E2FF;color: #fff;">hello bot</button>
+                        <button class="btn_sug" onclick="pickSuggestion(this.textContent)"
+                            style="background-color: #8353E2FF;color: #fff;">write linear search</button>
+                        <button class="btn_sug" onclick="pickSuggestion(this.textContent)"
+                            style="background-color: #8353E2FF;color: #fff;">write bogo sort</button>
+                        <button class="btn_sug" onclick="pickSuggestion(this.textContent)"
+                            style="background-color: #8353E2FF;color: #fff;">write ternary search</button>
+                        <button class="btn_sug" onclick="pickSuggestion(this.textContent)"
+                            style="background-color: #8353E2FF;color: #fff;">explain greedy algorithms</button> -->
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Ask" aria-label="Ask"
+                            aria-describedby="button-addon2">
+                        <button class="btn button" style="background-color: #493878;color: #fff;" onclick="WSSend()"
+                            id="send-button">Send</button>
+                        <button class="btn button" style="background-color: #493878;display: none;" id="send-loader">
+                            <div class="spinner-border text-light" role="status">
+                            </div>
+                        </button>
+
+                        <button class="btn button" style="background-color: #493878;color: #fff;margin-left: 3px;"
+                            onclick="WSHint()" id="hint-button">Hint
+                        </button>
+                        <button class="btn button" id="hint-loader"
+                            style="background-color: #493878;color: #fff;margin-left: 3px; display: none;">
+                            <div class="spinner-border text-light" role="status">
+
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-code" id="RunTestcases">
+                <div class="in">
+                    <div class="child1">
+                        <h3>Input</h3><br>
+                        <pre id="input-window">{{input}}</pre>
+                    </div>
+                    <div class="child2">
+                        <h3>Expected Output</h3><br>
+                        <pre>{{output}}</pre>
+                    </div>
+                </div>
+                <div class="out" style="display: none;" id="output-container">
+                    <pre id="output-window">OUTPUT</pre>
+                </div>
+                <div class="test-results" id="resultDiv" style="display: none;">
+                    <table id="resultTable">
+                        <thead>
+                            <tr>
+                                <th>Test Case</th>
+                                <th>Runtime</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTablebody">
+                            <tr class="accepted">
+                                <td>1</td>
+                                <td>0.23s</td>
+                                <td>Accepted &#128526;</td>
+                            </tr>
+                            <tr class="skipped">
+                                <td>2</td>
+                                <td>0.18s</td>
+                                <td>Skipped &#128580;</td>
+                            </tr>
+                            <tr class="wrong">
+                                <td>3</td>
+                                <td>0.45s</td>
+                                <td>Wrong Answer &#128542;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="box-sub" id="Sub">
+                {% for submission in submissions %}
+                <div class="card mt-3">
+                    <div class="card-body sub">
+                        <h6 class="block">{{submission.0}}</h6>
+                        <h6 class="block">{{submission.1}}</h6>
+                        <h6>
+                            <i class="bi bi-eye-fill"></i>
+                            {{submission.4}}
+                        </h6>
+                        <i class="bi bi-arrow-right-circle-fill" id="{{submission.3}}" onclick="get_code(this.id)"></i>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="code">
+            <div class="editor1">
+                <div class="editor" id="editor"></div>
+            </div>
+            <div class="run">
+                <button class="runbutton" onclick="executeCode()">Run</button>
+                <button class="runbutton" onclick="submitCode()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function get_code(id) {
+            var id = id;
+            var token = '{{ csrf_token }}';
+            
+            $.ajax({
+                url: '/problems/getcode/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': token
+                },
+                data: {
+                    'id': id,
+                },
+                success: function (response) {
+                    console.log( response);
+                    editor.setValue(response.code);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error sending code:', error);
+                }
+            });
+        }
+    </script>
+    <script>
+        function executeCode() {
+            RunTestcases();
+            var code = editor.getValue();
+            var token = '{{ csrf_token }}';
+            var inputwindow = document.getElementById("input-window");
+            $.ajax({
+                url: '/problems/run/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': token
+                },
+                data: {
+                    'code': code,
+                    'input': inputwindow.textContent,
+                },
+                success: function (response) {
+                    console.log('Code sent successfully:', response);
+                    var outputcontainer = document.getElementById('output-container');
+                    outputcontainer.style.display = "block";
+                    var outputWindow = document.getElementById("output-window");
+                    outputWindow.classList.add('code_get');
+                    outputWindow.textContent = response.output;
+                    outputcontainer.appendChild(outputWindow);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error sending code:', error);
+                }
+            });
+        }
+        function submitCode() {
+            RunTestcases();
+            var code = editor.getValue();
+            var token = '{{ csrf_token }}';
+            $.ajax({
+                url: '/problems/test/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': token
+                },
+                data: {
+                    'code': code,
+                    'id': "{{problem.id}}",
+                },
+                success: function (data) {
+                    console.log('Code sent successfully:', data);
+                    var resultDiv = document.getElementById('resultDiv');
+                    var resultTablebody = document.getElementById('resultTablebody');
+                    var resultTable = document.getElementById('resultTable');
+                    resultDiv.style.display = "block";
+                    resultTablebody.innerHTML = "";
+
+                    for (var key in data) {
+                        console.log(data[key]['runtime']);
+                        console.log(data[key]['verdict']);
+                        var runtime_data = data[key].runtime;
+                        var verdict_data = data[key].verdict;
+                        var tablerow = document.createElement('tr');
+                        var runtime = document.createElement('td');
+                        var verdict = document.createElement('td');
+                        var testcase = document.createElement('td');
+                        if (verdict_data == 'Accepted') {
+                            tablerow.classList.add('accepted');
+                            verdict.textContent = "Accepted " + "😎";
+                        }
+                        else if (verdict_data == 'skipped') {
+                            tablerow.classList.add('skipped');
+                            verdict.textContent = "Skipped " + "😐";
+                        }
+                        else {
+                            tablerow.classList.add('wrong');
+                            verdict.textContent = verdict_data + " 😞";
+                        }
+                        
+                        testcase.textContent = key;
+                        runtime.textContent = runtime_data;
+                        tablerow.appendChild(testcase);
+                        tablerow.appendChild(runtime);
+                        tablerow.appendChild(verdict);
+                        resultTablebody.appendChild(tablerow);
+                        resultTable.appendChild(resultTablebody);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error sending code:', error);
+                }
+            });
+        }
+    </script>
+    <script>
+        var ProblemsDiv = document.getElementById('Problems');
+        var PybotDiv = document.getElementById('Pybot');
+        var RunTestcasesDiv = document.getElementById('RunTestcases');
+        let problem = document.getElementById('problem');
+        let pybot = document.getElementById('pybot');
+        let run = document.getElementById('run');
+        let sub = document.getElementById('sub');
+        let Sub = document.getElementById('Sub');
+
+        function Problems() {
+            ProblemsDiv.style.display = "block";
+            PybotDiv.style.display = "none";
+            RunTestcasesDiv.style.display = "none";
+            Sub.style.display = "none";
+            problem.classList.add("color");
+            pybot.classList.remove("color");
+            run.classList.remove("color");
+            sub.classList.remove("color");
+        }
+
+        function Pybot() {
+            ProblemsDiv.style.display = "none";
+            PybotDiv.style.display = "block";
+            RunTestcasesDiv.style.display = "none";
+            Sub.style.display = "none";
+            pybot.classList.add("color");
+            problem.classList.remove("color");
+            run.classList.remove("color");
+            sub.classList.remove("color");
+        }
+
+        function RunTestcases() {
+            ProblemsDiv.style.display = "none";
+            PybotDiv.style.display = "none";
+            RunTestcasesDiv.style.display = "block";
+            Sub.style.display = "none";
+            run.classList.add("color");
+            problem.classList.remove("color");
+            pybot.classList.remove("color");
+            sub.classList.remove("color");
+        }
+        function submissions() {
+            Sub.style.display = "block";
+            ProblemsDiv.style.display = "none";
+            PybotDiv.style.display = "none";
+            RunTestcasesDiv.style.display = "none";
+            run.classList.remove("color");
+            problem.classList.remove("color");
+            pybot.classList.remove("color");
+            sub.classList.add("color");
+        }
+        Problems();
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        let editor;
+        window.onload = function () {
+            editor = ace.edit("editor");
+            editor.setTheme("ace/theme/twilight");
+            editor.session.setMode("ace/mode/python");
+            editor.setOptions({
+                fontFamily: "Fira Code, monospace",
+                fontSize: "13pt",
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/typewriter-effect@latest/dist/core.js"></script>
+    <script>
+        function applyTypewriterEffect(container, text) {
+            var typewriter = new Typewriter(container, {
+                loop: false,
+                delay: 10,
+            });
+            typewriter
+                .typeString(text)
+                .start()
+        }
+        function typewriterEffect(element, codeString, speed) {
+            element.textContent = '';
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < codeString.length) {
+                    element.textContent += codeString.charAt(index);
+                    index++;
+                    const tempElement = document.createElement('code');
+                    tempElement.className = element.className;
+                    tempElement.textContent = element.textContent;
+                    hljs.highlightElement(tempElement);
+                    element.innerHTML = tempElement.innerHTML;
+                    hljs.highlightElement(element);
+                } else {
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+    </script>
+    <script>
+        function pickSuggestion(suggestion) {
+            var input = document.querySelector('.form-control');
+            input.value = suggestion;
+            WSSend();
+        }
+        function get_suggestions() {
+            var code = editor.getValue();
+            var token = '{{ csrf_token }}';
+            $.ajax({
+                url: '/problems/suggestions/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': token
+                },
+                data: {
+                    'code': code,
+                },
+                success: function (response) {
+                    console.log(response)
+                    var suggestionbox = document.getElementById('suggestionbox');
+                    suggestionbox.innerHTML = "";
+
+                    for (var key in response) {
+                        const button = document.createElement('button');
+                        button.className = 'btn_sug';
+                        button.style.backgroundColor = '#8353E2FF';
+                        button.style.color = '#fff';
+                        button.textContent = response[key];
+                        button.onclick = function () {
+                            pickSuggestion(button.textContent);
+                        };
+                        suggestionbox.appendChild(button);
+                        console.log("appended", response[key]);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error sending code:', error);
+                }
+            });
+        }
+        // setInterval(get_suggestions, 10000);
+    </script>
+    <script>
+        var ws = new WebSocket('ws://127.0.0.1:8000/ws/pybot/')
+        ws.onopen = function () {
+            console.log("websocket connected")
+        }
+        function WSHint() {
+            var spinner  = '<div class="spinner-border text-light" role="status"><span class="sr-only"></span></div>'
+            $("#hint-button").html(spinner);
+
+            var input = "Give hints for solving this problem.";
+            var chatbotDiv = document.getElementById('conversation');
+            var responseDiv = document.createElement('pre');
+            responseDiv.classList.add('user');
+            responseDiv.textContent = input;
+            chatbotDiv.appendChild(responseDiv);
+            var currentUrl = window.location.href;
+            var segments = currentUrl.split('/');
+            var lastSegment = segments[segments.length - 2];
+            var code = editor.getValue();
+
+            var Data = {
+                'type': 'hint',
+                'problmeid': lastSegment,
+                'code': code
+            };
+            ws.send(JSON.stringify(Data));
+        }
+        function WSSend() {
+            var spinner  = '<div class="spinner-border text-light" role="status"><span class="sr-only"></span></div>'
+            $("#send-button").html(spinner);
+            var input = document.querySelector('.form-control').value;
+            var chatbotDiv = document.getElementById('conversation');
+            var responseDiv = document.createElement('pre');
+            responseDiv.classList.add('user');
+            responseDiv.textContent = input;
+            chatbotDiv.appendChild(responseDiv);
+
+            var code = editor.getValue();
+            var query;
+            if (code != "") {
+                query = input + " here is my code: ```" + code + " ``` ";
+            } else {
+                query = input;
+            }
+            var Data = {
+                'type': 'query',
+                'prompt': query
+            };
+            ws.send(JSON.stringify(Data));
+        }
+        ws.onmessage = function (event) {
+            var chatbotDiv = document.getElementById('conversation');
+            var data = JSON.parse(event.data);
+
+            for (var key in data) {
+                var response = data[key]['text'];
+                var is_code = data[key]['is_code'];
+
+                if (is_code != "") {
+                    var language = is_code;
+                    var code_number = data[key]['code_number'];
+                    var codeDiv = document.createElement('div');
+                    var pre = document.createElement('pre');
+                    var codeElem = document.createElement('code');
+                    codeElem.id = 'codeElemId' + code_number;
+                    var copybar = document.createElement('div');
+                    copybar.classList.add('copybar');
+                    var languageElem = document.createElement('span');
+                    languageElem.style.color = 'white';
+                    languageElem.classList.add('element');
+                    languageElem.style.display = 'start';
+                    languageElem.textContent = language;
+                    copybar.appendChild(languageElem);
+
+                    var copyIcon = document.createElement('i');
+                    copyIcon.id = 'copyIconId' + code_number;
+                    copyIcon.onclick = function () {
+                        copyCode(copyIcon.id);
+                    };
+                    copyIcon.className = 'fa fa-sharp fa-solid fa-copy';
+                    copyIcon.style.color = 'gray';
+                    copyIcon.style.marginLeft = '5px';
+                    copyIcon.style.cursor = 'pointer';
+                    copyIcon.classList.add('copyIcon');
+
+                    copybar.appendChild(copyIcon);
+                    codeElem.classList.add('language-' + language);
+                    pre.appendChild(codeElem);
+                    codeDiv.appendChild(copybar);
+
+                    codeDiv.appendChild(pre);
+                    chatbotDiv.appendChild(codeDiv);
+                    typewriterEffect(codeElem, response, 10);
+                } else {
+                    var responseDiv = document.createElement('pre');
+                    responseDiv.classList.add('response');
+                    chatbotDiv.appendChild(responseDiv);
+                    var formattedText = response.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") 
+                                                .replace(/\*(.*?)\*/g, "<em>$1</em>"); 
+                    applyTypewriterEffect(responseDiv, formattedText);
+                }
+            }
+            chatbotDiv.scrollTop = chatbotDiv.scrollHeight;
+            $("#send-button").text("Send");
+            $("#hint-button").text("Hint");
+        };
+        ws.onclose = function () {
+            console.error('websocket connection closed...');
+        };
+
+    </script>
+    <script>
+        function copyCode(buttonId) {
+            var codeNumber = buttonId.replace('copyIconId', '');
+            var codeElemId = 'codeElemId' + codeNumber;
+            var codeElem = document.getElementById(codeElemId);
+            console.log(codeElemId);
+            if (codeElem) {
+                var tempTextarea = document.createElement('textarea');
+                tempTextarea.value = codeElem.textContent;
+                document.body.appendChild(tempTextarea);
+                tempTextarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextarea);
+            } else {
+                console.error('Code element not found for ID:', codeElemId);
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+</body>
+
+</html>

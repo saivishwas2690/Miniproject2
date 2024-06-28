@@ -1,0 +1,15 @@
+
+Problem statement
+Given an array \(a\) of integers of size \(n\) and an integer \(target\), Your job is to check whether there exists any
+pair \((a_i\ , a_j)\) such that the following is true:
+\[a_i + a_j = target\]
+
+####################################################################################################################
+Input Format
+ the first line of the input contains an integer \(t\), \((1<= t <= 1e5)\)  reprsenting number of testcases.
+for each testcase first line contains an integer \(n\), \((1<= n <= 1e5)\), \(target\) \((1 <= target <= 1e5)\)   size of array. Next line contains \(n\) integers  \(a_1, a_2, a_3,..a_n\), \((0 <= a_i <= 1e6)\)
+  
+###################################################################################################################
+Output Format
+For each testcase print 'YES' if the given condition is true,'NO' otherwise.
+

@@ -1,0 +1,8 @@
+<p>Given an integer array \(a\) of size \(n\) , print \(true\) if any value appears <b>at least</b> 
+    <b>twice</b> in the array, and print \(false\) if every element is distinct.</p>
+
+First line contains integer \(t\), (\0 <= t <= 10^5\) which is the number of test cases.
+first line of each test case contains integer \(n\), (\0 <= n <= 10^5\) which is the size of array.
+second line of each test case contains \(n\) space separated integers (\a_1, a_2, a_3,...a_n\), (\0 <= a_i <= 10^9\) which are the elements of array.
+
+for each test case print \(true\) if any value appears at least twice in the array, and print \(false\) if every element is distinct.

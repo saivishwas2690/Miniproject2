@@ -1,0 +1,58 @@
+You are given an array \(a\)
+ of length \(n\)
+ and array \(b\)
+ of length \(m\)
+ both consisting of only integers 0
+ and 1. \(\\ \)
+Consider a matrix \(c\)
+ of size \(n×m\)
+ formed by following rule: \(c_i\) , \(j=a_i⋅b_j\)
+ (i.e. \(a_i\)
+ multiplied by \(b_j\)
+). It's easy to see that \(c\)
+ consists of only zeroes and ones too. \( \\ \)
+
+How many subrectangles of size (area) \(k\)
+ consisting only of ones are there in \(c\)
+? \(\\ \)
+
+A subrectangle is an intersection of a consecutive (subsequent) segment of rows and a consecutive (subsequent) segment of columns. I.e. consider four integers \(x1,x2,y1,y2\)
+ \((1≤x1≤x2≤n
+, 1≤y1≤y2≤m\)) a subrectangle \(c[x1…x2][y1…y2]\)
+ is an intersection of the rows \(x1,x1+1,x1+2,…,x2\)
+ and the columns \(y1,y1+1,y1+2,…,y2\). \(\\ \)
+
+The size (area) of a subrectangle is the total number of cells in it.
+
+#################################################################################################################################
+
+Input
+
+The first line contains three integers \(n
+, m\)
+ and \(k\)
+ \((1≤n,m≤40000,1≤k≤n⋅m
+)\), length of array \(a\)
+, length of array \(b\)
+ and required size of subrectangles. \(\\ \)
+
+The second line contains \(n\)
+ integers \(a_1,a_2,…,a_n
+ (0≤ai≤1
+)\), elements of \(a\)
+. \(\\ \)
+
+The third line contains \(m\)
+ integers \(b_1,b_2,…,b_m
+ (0≤bi≤1
+)\), elements of \(b\)
+.
+
+
+#################################################################################################################################
+
+Output
+
+Output single integer — the number of subrectangles of \(c\)
+ with size (area) \(k\)
+ consisting only of ones.

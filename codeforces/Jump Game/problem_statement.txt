@@ -1,0 +1,11 @@
+You are given an integer array \(a\). You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+Print 'TRUE' if you can reach the last index, or 'FALSE'  otherwise.
+
+input
+first line contains integer \(t\), \(1 <= t<= 10\), number of testcases.
+first each testcase contains and \(n\), \(1 <= n <= 10^5\) length of array \(a\).
+sencond line contains \(a_i, a_2, a_3, a_4...a_n\).
+
+output
+print 'TRUE' or 'FALSE' for each testcase

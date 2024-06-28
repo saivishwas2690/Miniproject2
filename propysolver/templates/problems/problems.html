@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/problems.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Sofia"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="nav">
+        <section class="logo">
+          <a style="color: #8353E2FF; font-size: 1.2rem; "href="/" style="text-decoration: none;"><h1>ProPySolver</h1></a>
+        </section>
+        <a href="/profile"><button class="btn">Profile</button></a>
+      </header>
+      <main class="main-sec">
+        <div class="left">
+          {% for data in context %}
+          <div class="module">
+            <div class="mod-name">
+              <a href="/problems/{{data.0.module}}/{{data.0.id}}"
+                >{{data.0.title}}</a
+              >
+            </div>
+            <div class="count">
+              <h1 class="count-st">{{data.1}}%</h1>
+            </div>
+            {% if data.2 == "Accepted" %}
+            <div class="green_verdict">
+              <div>
+                <img src="/static/css/tick.png" class="icon" alt="Accepted" />
+              </div>
+            </div>
+            {% elif data.2 == "Wrong Answer" %}
+            <div class="red_verdict">
+              <div>
+                <img
+                  src="/static/css/cross.png"
+                  class="icon"
+                  alt="Wrong Answer"
+                />
+              </div>
+            </div>
+            {% else %}
+            <div class="grey_verdict">
+              <div>
+                <img class="icon" alt="" />
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <div class="right">
+          <div class="status">
+            <canvas class="graph" id="myRingChart"></canvas>
+            <!-- <div>
+              <p>Accepted</p>
+              <p>Wrong Answer</p>
+              <p>Not Attempted</p>
+            </div> -->
+          </div>
+          <!-- <div class="tags">
+            <div class="tags-child"><a href="">Greedy</a></div>
+            <div class="tags-child"><a href="">Strings </a></div>
+            <div class="tags-child"><a href="">Two Pointer</a></div>
+            <div class="tags-child"><a href="">Divide And Conqure</a></div>
+            <div class="tags-child"><a href="">DP</a></div>
+            <div class="tags-child"><a href="">Stacks</a></div>
+            <div class="tags-child"><a href="">Linked List</a></div>
+            <div class="tags-child"><a href="">Queues</a></div>
+            <div class="tags-child"><a href="">Back Tracking </a></div>
+            <div class="tags-child"><a href="">Trees</a></div>
+            <div class="tags-child"><a href="">Number theory</a></div>
+            <div class="tags-child"><a href="">Greedy</a></div>
+          </div> -->
+        </div>
+      </main>
+    </div>
+  </body>
+  <script>
+    function redirect(problem, module) {
+      window.location.href = "problems/" + problem + "/" + module;
+    }
+  </script>
+  <script>
+    var canvas = document.getElementById('myRingChart');
+    canvas.width = 300; // Set canvas width
+    canvas.height = 300;
+    var chartData = {
+        labels: ['Not Attempted', 'Accepted', 'Wrong Answer'],
+        datasets: [{
+            label: 'number of Problems',
+            data: [{{total_not_attempted}}, {{total_solve}}, {{total_wrong}}],
+            backgroundColor: [
+                'gray',
+                'rgb(177, 239, 84)',
+                'rgb(234, 65, 65)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+    var chartOptions = {
+        responsive: false,
+        cutout: '50%',
+        plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+            }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2);
+                    }
+                }
+            }
+        }
+    var ctx = document.getElementById('myRingChart').getContext('2d');
+    var myRingChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: chartData,
+        options: chartOptions
+    });
+    </script>
+</html>

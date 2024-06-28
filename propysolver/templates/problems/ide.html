@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Codeboard Online IDE</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+
+    <style>
+      * {
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+
+      .chatbot {
+        flex: 1;
+        background-color: #f0f0f0;
+        padding: 20px;
+      }
+
+      .user {
+        flex: 1;
+        background-color: #e0e0e0;
+        padding: 20px;
+        text-align: right;
+      }
+
+      .message {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .message {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: left; /* Align chatbot messages to the left */
+      }
+
+      .usermessage {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: right; /* Align user messages to the right */
+      }
+
+      .code-editor {
+        flex: 2;
+        background-color: #fff;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .control-panel {
+        background: lightgray;
+        text-align: right;
+        padding: 4px;
+        font-family: sans-serif;
+        margin-bottom: 20px;
+      }
+
+      #editor {
+        height: 400px;
+        margin-bottom: 20px;
+        overflow-y: auto;
+      }
+
+      .button-container {
+        text-align: right;
+        padding: 4px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        background: #57a958;
+        color: white;
+        padding: 8px;
+        border: 0;
+      }
+
+      .output {
+        padding: 4px;
+        border: 2px solid gray;
+        min-height: 100px;
+        width: 100%;
+        resize: none;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        pointer-events: none; /* Disable pointer events */
+      }
+
+      .input-output {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      .input-window,
+      .output-window {
+        padding: 10px;
+        flex: 1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        overflow: auto;
+        resize: none;
+        height: 200px; /* Adjust the height as needed */
+      }
+
+      .chat-input {
+        display: flex;
+        align-items: center; /* Align items vertically */
+        margin-bottom: 20px;
+      }
+
+      .chat-input input {
+        flex: 1; /* Take remaining space */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+
+      .chat-input button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .problem-info {
+        flex: 1;
+        background-color: #f0f0f0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .problem-info h2 {
+        margin-top: 0;
+      }
+
+      .problem-info pre {
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+
+      .code-editor {
+        flex: 2;
+        background-color: #fff;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="problem-info">
+
+        <h1>{{ problem.title }}</h1>
+
+        <h2>Problem Statement</h2>
+        <p>{{ problem.problem_statement }}</p>
+
+        <h2>Time Limit</h2>
+        <p>{{problem.time_limit}}  seconds</p>
+
+        <h2>Input Format</h2>
+        <p>{{problem.input_format}}</p>
+        <h2>Output Format</h2>
+        <p>{{problem.output_format}}</p>
+
+        <h2>Sample Input</h2>
+        <pre>{{input}}</pre>
+
+        <h2>Sample Output</h2>
+        <pre>{{output}}</pre>
+      </div>
+
+      <div class="code-editor">
+        <div class="editor" id="editor"></div>
+        <div class="input-output">
+          <textarea
+            id="input-window"
+            class="input-window"
+            placeholder="Input"
+          ></textarea>
+          <textarea
+            id="output-window"
+            class="output-window"
+            placeholder="Output"
+            readonly
+          ></textarea>
+        </div>
+        <div class="button-container">
+          <button class="btn" onclick="submitCode()">Submit</button>
+          <button class="btn" onclick="executeCode()">Run</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+    <script>
+      let editor;
+      window.onload = function() {
+          editor = ace.edit("editor");
+          editor.setTheme("ace/theme/twilight");
+          editor.session.setMode("ace/mode/python");
+          editor.setOptions({
+              fontFamily: "Fira Code, monospace",
+              fontSize: "15pt"
+          });
+      }
+      // var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/')
+      // ws.onopen = function (){
+      //     console.log("websocket connected")
+      // }
+      // ws.onmessage = function(event){
+      //     console.log("messege recived from server", event)
+      //     var chatbotDiv = document.querySelector('.chatbot');
+      //     var messageDiv = document.createElement('div');
+      //     messageDiv.classList.add('message');
+      //     messageDiv.textContent = event.data;
+      //     // console.log(python_code);
+      //     chatbotDiv.insertBefore(messageDiv, chatbotDiv.lastElementChild);
+      //     document.getElementById("chatbot-input").value = "";
+      // }
+      // ws.onclose = function(){
+      //     console.error('websocket connection closed...')
+      // }
+      function executeCode(){
+          var code = editor.getValue();
+          var token = '{{ csrf_token }}' ;
+          var inputwindow = document.getElementById("input-window");
+          $.ajax({
+              url: '/problems/run/',
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': token
+              },
+              data: {
+                  'code': code ,
+                  'input': inputwindow.value
+              },
+              success: function(response) {
+                  console.log('Code sent successfully:', response);
+                  var outputWindow = document.getElementById("output-window");
+                  
+                  outputWindow.value = response.output;
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error sending code:', error);
+              }
+          });
+      }
+      function submitCode(){
+          var code = editor.getValue();
+          var token = '{{ csrf_token }}' ;
+          $.ajax({
+              url: '/problems/test/',
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': token
+              },
+              data: {
+                  'code': code ,
+                  'id': "{{problem.id}}",
+              },
+              success: function(response) {
+                  console.log('Code sent successfully:', response);
+                  var outputWindow = document.getElementById("output-window");
+                  console.log(typeof(response.output));
+                  outputWindow.value = response.output;
+              },
+              error: function(xhr, status, error) {
+                  console.error('Error sending code:', error);
+              }
+          });
+      }
+    </script>
+  </body>
+</html>

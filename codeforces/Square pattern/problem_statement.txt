@@ -1,0 +1,8 @@
+given a \(n\) print a Square pattern with '*'.
+
+input format:
+first line of the input contains an integer \(t\), \(1 <= t<= 10\) representing number of testcases.
+for each testcase given an integer \(n\) \(i <= n <= 100\).
+
+output format
+for each testcase print the pattern.

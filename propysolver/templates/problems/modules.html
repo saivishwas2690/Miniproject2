@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/modules.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="nav">
+        <h1 style="margin-top: 1px;"class="propysolver">ProPySolver</h1>
+        <a href="/profile/"><button class="btn">Profile</button></a>
+    </div>
+    <div class="container">
+        <main class="main-sec">
+            <div class="left">
+                {% for module in modules %}
+                <div class="module">
+                    <div class="mod-name">{{module.0}}</div>
+                    <div class="count">
+                        <h1 class="count-st">{{module.2}}/{{module.1}}</h1>
+                        <button class="pro-btn" onclick = redirect("{{ module.0 }}")>Problems</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="right">
+                <div class="status">
+                    <canvas class="graph" id="myRingChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+<script>
+    function redirect(module){
+        window.location.href = "/problems/"+module;
+    }
+</script>
+<script>
+    var canvas = document.getElementById('myRingChart');
+    canvas.width = 300; 
+    canvas.height = 300;
+    var chartData = {
+        labels: ['Loops', 'Array', 'Recursion', 'Hashing', 'Dynamic Programming', 'Math'],
+        datasets: [{
+            label: 'number of problems',
+            data: ['{{modules.0.2}}', '{{modules.1.2}}', '{{modules.2.2}}', '{{modules.3.2}}', '{{modules.4.2}}', '{{modules.5.2}}'],
+            backgroundColor: [
+                'rgb(255, 99, 71)',    
+                'rgb(70, 130, 180)',   
+                'rgb(50, 205, 50)',   
+                'rgb(255, 215, 0)',   
+                'rgb(106, 90, 205)',   
+                'rgb(255, 105, 18)',
+                'gray'   
+            ],
+            hoverOffset: 4
+        }]
+    };
+    var chartOptions = {
+        responsive: false,
+        cutout: '50%',
+        plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+            }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2);
+                    }
+                }
+            }
+        }
+    var ctx = document.getElementById('myRingChart').getContext('2d');
+    var myRingChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: chartData,
+        options: chartOptions
+    });
+    </script>
+</html>
