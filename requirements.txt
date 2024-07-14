@@ -1,0 +1,6 @@
+google-generativeai
+google-api-python-client
+anthropic
+daphne
+channels
+redis
